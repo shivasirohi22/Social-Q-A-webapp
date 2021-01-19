@@ -80,6 +80,7 @@ public class UserAuthenticationService {
 
     //checks whether the username exist in the database
     private boolean isUserNameInUse(final String userName) {
+
         return userDao.getUserByUserName(userName) != null;
     }
 
