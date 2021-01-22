@@ -13,13 +13,11 @@ import javax.validation.constraints.Size;
 import java.time.ZonedDateTime;
 
 @Entity
-@Table(name = "question")
+@Table(name = "answer")
 @NamedQueries({
-        @NamedQuery(name = "getAllQuestions", query = "select q from QuestionEntity q"),
-        @NamedQuery(name = "getQuestionById", query = "select q from QuestionEntity q where q.uuid=:uuid")
+        @NamedQuery(name = "getAnswerById", query = "select a from AnswerEntity a where a.uuid=:uuid")
 })
-public class QuestionEntity {
-
+public class AnswerEntity {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,10 +28,10 @@ public class QuestionEntity {
     @NotNull
     private String uuid;
 
-    @Column(name = "content")
-    @Size(max = 500)
+    @Column(name = "ans")
+    @Size(max = 255)
     @NotNull
-    private String content;
+    private String answer;
 
     @Column(name = "date")
     @NotNull
@@ -43,6 +41,11 @@ public class QuestionEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
+
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "question_id")
+    private QuestionEntity questionEntity;
 
     public Integer getId() {
         return id;
@@ -60,12 +63,12 @@ public class QuestionEntity {
         this.uuid = uuid;
     }
 
-    public String getContent() {
-        return content;
+    public String getAnswer() {
+        return answer;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 
     public ZonedDateTime getDate() {
@@ -82,6 +85,14 @@ public class QuestionEntity {
 
     public void setUserEntity(UserEntity userEntity) {
         this.userEntity = userEntity;
+    }
+
+    public QuestionEntity getQuestionEntity() {
+        return questionEntity;
+    }
+
+    public void setQuestionEntity(QuestionEntity questionEntity) {
+        this.questionEntity = questionEntity;
     }
 
     @Override
