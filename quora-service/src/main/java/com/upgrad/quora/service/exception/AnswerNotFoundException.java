@@ -15,6 +15,14 @@ public class AnswerNotFoundException extends Exception {
         this.errorMessage = errorMessage;
     }
 
+
+    public String getCode() {
+        return code;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
     @Override
     public void printStackTrace() {
         super.printStackTrace();
@@ -30,13 +38,6 @@ public class AnswerNotFoundException extends Exception {
         super.printStackTrace(s);
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public String getErrorMessage() {
-        return errorMessage;
-    }
 
 }
 

@@ -15,6 +15,13 @@ public class SignUpRestrictedException extends Exception {
         this.errorMessage = errorMessage;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
     @Override
     public void printStackTrace() {
         super.printStackTrace();
@@ -30,13 +37,6 @@ public class SignUpRestrictedException extends Exception {
         super.printStackTrace(s);
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public String getErrorMessage() {
-        return errorMessage;
-    }
 
 }
 

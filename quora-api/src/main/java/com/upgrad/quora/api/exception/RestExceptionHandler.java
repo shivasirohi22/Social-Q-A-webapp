@@ -15,29 +15,37 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ErrorResponse> userNotFoundException(UserNotFoundException exception, WebRequest request) {
+        String code=exception.getCode();
+        String errorMessage=exception.getErrorMessage();
         return new ResponseEntity<ErrorResponse>(
-                new ErrorResponse().code(exception.getCode()).message(exception.getErrorMessage()), HttpStatus.NOT_FOUND
+                new ErrorResponse().code(code).message(errorMessage), HttpStatus.NOT_FOUND
         );
     }
 
     @ExceptionHandler(AuthorizationFailedException.class)
     public ResponseEntity<ErrorResponse> authorizationFailedException(AuthorizationFailedException exception, WebRequest request) {
+        String code=exception.getCode();
+        String errorMessage=exception.getErrorMessage();
         return new ResponseEntity<ErrorResponse>(
-                new ErrorResponse().code(exception.getCode()).message(exception.getErrorMessage()), HttpStatus.FORBIDDEN
+                new ErrorResponse().code(code).message(errorMessage), HttpStatus.FORBIDDEN
         );
     }
 
     @ExceptionHandler(SignUpRestrictedException.class)
     public ResponseEntity<ErrorResponse> signUpRestrictionException(SignUpRestrictedException exception, WebRequest request) {
+        String code=exception.getCode();
+        String errorMessage=exception.getErrorMessage();
         return new ResponseEntity<ErrorResponse>(
-                new ErrorResponse().code(exception.getCode()).message(exception.getErrorMessage()), HttpStatus.CONFLICT
+                new ErrorResponse().code(code).message(errorMessage), HttpStatus.CONFLICT
         );
     }
 
     @ExceptionHandler(AuthenticationFailedException.class)
     public ResponseEntity<ErrorResponse> authorizationFailedException(AuthenticationFailedException exception, WebRequest request) {
+        String code=exception.getCode();
+        String errorMessage=exception.getErrorMessage();
         return new ResponseEntity<ErrorResponse>(
-                new ErrorResponse().code(exception.getCode()).message(exception.getErrorMessage()), HttpStatus.UNAUTHORIZED
+                new ErrorResponse().code(code).message(errorMessage), HttpStatus.UNAUTHORIZED
         );
     }
 }
