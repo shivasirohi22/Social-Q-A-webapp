@@ -39,10 +39,10 @@ public class AnswerService {
    */
   @Transactional(propagation = Propagation.REQUIRED)
   public AnswerEntity createAnswer(
-      AnswerEntity answerEntity, final String accessToken, final String questionId)
+      AnswerEntity answerEntity, final String authToken, final String questionId)
       throws InvalidQuestionException, AuthorizationFailedException {
 
-    UserAuthEntity userAuthEntity = userAuthDao.getUserAuthByToken(accessToken);
+    UserAuthEntity userAuthEntity = userAuthDao.getUserAuthByToken(authToken);
 
     if (userAuthEntity == null) {
 

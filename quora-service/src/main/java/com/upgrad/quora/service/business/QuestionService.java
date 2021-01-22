@@ -28,11 +28,11 @@ public class QuestionService {
   @Autowired private QuestionDao questionDao;
 
   /**
-   * Creates question in the DB if the accessToken is valid.
+   * creates a new question in DB
    *
-   * @param accessToken accessToken of the user for valid authentication.
-   * @throws AuthorizationFailedException ATHR-001 - if user token is not present in DB. ATHR-002 if
-   *     the user has already signed out.
+   * @param authToken to authorise user for using the service
+   *  @return returns response data
+   *    @throws AuthorizationFailedException for user auhtorisation failure
    */
   @Transactional(propagation = Propagation.REQUIRED)
   public QuestionEntity createQuestion(QuestionEntity questionEntity, final String accessToken)
@@ -53,10 +53,9 @@ public class QuestionService {
   /**
    * Gets all the questions in the DB.
    *
-   * @param accessToken accessToken of the user for valid authentication.
+   * @param authToken to authorise user for using the service
+   *     @throws AuthorizationFailedException for user auhtorisation failure
    * @return List of QuestionEntity
-   * @throws AuthorizationFailedException ATHR-001 - if user token is not present in DB. ATHR-002 if
-   *     the user has already signed out.
    */
   public List<QuestionEntity> getAllQuestions(final String accessToken)
       throws AuthorizationFailedException {
@@ -70,17 +69,7 @@ public class QuestionService {
     return questionDao.getAllQuestions();
   }
 
-  /**
-   * * Edit the question
-   *
-   * @param accessToken accessToken of the user for valid authentication.
-   * @param questionId id of the question to be edited.
-   * @param content new content for the existing question.
-   * @return QuestionEntity
-   * @throws AuthorizationFailedException ATHR-001 - if user token is not present in DB. ATHR-002 if
-   *     the user has already signed out.
-   * @throws InvalidQuestionException if the question with id doesn't exist.
-   */
+
   @Transactional(propagation = Propagation.REQUIRED)
   public QuestionEntity editQuestion(
       final String accessToken, final String questionId, final String content)
@@ -96,10 +85,8 @@ public class QuestionService {
     if (questionEntity == null) {
       throw new InvalidQuestionException("QUES-001", "Entered question uuid does not exist");
     }
-    if (!questionEntity
-        .getUserEntity()
-        .getUuid()
-        .equals(userAuthEntity.getUserEntity().getUuid())) {
+    String id =questionEntity.getUserEntity().getUuid();
+    if (!id.equals(userAuthEntity.getUserEntity().getUuid())) {
       throw new AuthorizationFailedException(
           "ATHR-003", "Only the question owner can edit the question");
     }
@@ -108,16 +95,7 @@ public class QuestionService {
     return questionEntity;
   }
 
-  /**
-   * * Delete the question
-   *
-   * @param accessToken accessToken of the user for valid authentication.
-   * @param questionId id of the question to be edited.
-   * @return QuestionEntity
-   * @throws AuthorizationFailedException ATHR-001 - if user token is not present in DB. ATHR-002 if
-   *     the user has already signed out.
-   * @throws InvalidQuestionException if the question with id doesn't exist.
-   */
+
   @Transactional(propagation = Propagation.REQUIRED)
   public QuestionEntity deleteQuestion(final String accessToken, final String questionId)
       throws AuthorizationFailedException, InvalidQuestionException {
@@ -132,8 +110,10 @@ public class QuestionService {
     if (questionEntity == null) {
       throw new InvalidQuestionException("QUES-001", "Entered question uuid does not exist");
     }
-    if (!questionEntity.getUserEntity().getUuid().equals(userAuthEntity.getUserEntity().getUuid())
-        && !userAuthEntity.getUserEntity().getRole().equals("admin")) {
+    String id= questionEntity.getUserEntity().getUuid();
+    String role = userAuthEntity.getUserEntity().getRole();
+    if (!id.equals(userAuthEntity.getUserEntity().getUuid())
+        && !role.equals("admin")) {
       throw new AuthorizationFailedException(
           "ATHR-003", "Only the question owner or admin can delete the question");
     }
@@ -142,15 +122,7 @@ public class QuestionService {
     return questionEntity;
   }
 
-  /**
-   * Gets all the questions posted by a specific user.
-   *
-   * @param userId userId of the user whose posted questions have to be retrieved
-   * @param accessToken accessToken of the user for valid authentication.
-   * @return List of QuestionEntity
-   * @throws AuthorizationFailedException ATHR-001 - if user token is not present in DB. ATHR-002 if
-   *     the user has already signed out.
-   */
+
   public List<QuestionEntity> getAllQuestionsByUser(final String userId, final String accessToken)
       throws AuthorizationFailedException, UserNotFoundException {
     UserAuthEntity userAuthEntity = userAuthDao.getUserAuthByToken(accessToken);
