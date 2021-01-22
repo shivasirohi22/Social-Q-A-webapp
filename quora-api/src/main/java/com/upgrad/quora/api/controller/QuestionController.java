@@ -1,8 +1,9 @@
 package com.upgrad.quora.api.controller;
 
 
-*import com.upgrad.quora.api.model.*;
-import com.upgrad.quora.service.entity.*;
+import com.upgrad.quora.api.model.*;
+import com.upgrad.quora.service.business.QuestionService;
+import com.upgrad.quora.service.entity.QuestionEntity;
 import com.upgrad.quora.service.exception.AuthorizationFailedException;
 import com.upgrad.quora.service.exception.InvalidQuestionException;
 import com.upgrad.quora.service.exception.UserNotFoundException;
