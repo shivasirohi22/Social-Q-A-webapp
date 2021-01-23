@@ -47,4 +47,19 @@ public class AnswerDao {
         entityManager.merge(answerEntity);
     }
 
+    /**
+     * Deleting an answer by given answerId from the database.
+     * @param answerId Id of the answer whose information is to be fetched.
+     * @return Answer details which is to be deleted if exist in the DB else null.
+     */
+
+    public AnswerEntity deleteAnswer(final String answerId) {
+        AnswerEntity deleteAnswer = getAnswerById(answerId);
+        if (deleteAnswer != null) {
+            entityManager.remove(deleteAnswer);
+        }
+        return deleteAnswer;
+    }
+
+
 }
