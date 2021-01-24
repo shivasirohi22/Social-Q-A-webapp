@@ -80,7 +80,25 @@ public class UserAuthenticationService {
 
     //checks whether the username exist in the database
     private boolean isUserNameInUse(final String userName) {
+
         return userDao.getUserByUserName(userName) != null;
+    }
+
+    /**
+     * This method is used by user to signout.
+     * @param accessToken Access token of the user.
+     * @return UserEntity details of the signed out user.
+     * @throws SignOutRestrictedException SGR-001 if the access-token is not present in the DB.
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    public UserEntity signout(final String accessToken) throws SignOutRestrictedException {
+        UserAuthEntity userAuthEntity = userAuthDao.getUserAuthByToken(accessToken);
+        if(userAuthEntity==null){
+            throw new SignOutRestrictedException("SGR-001","User is not Signed in");
+        }
+        userAuthEntity.setLogoutAt(ZonedDateTime.now());
+        userAuthDao.updateUserAuth(userAuthEntity);
+        return userAuthEntity.getUserEntity();
     }
 
     //checks whether the email exist in the database
