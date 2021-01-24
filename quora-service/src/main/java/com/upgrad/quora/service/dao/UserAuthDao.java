@@ -13,10 +13,9 @@ public class UserAuthDao {
     private EntityManager entityManager;
 
     /**
-     * Gets the user auth information based on the access token.
      *
-     * @param accessToken access token of the user auth whose details is to be fetched.
-     * @return A single user auth object or null
+     * @param accessToken
+     * @return
      */
     public UserAuthEntity getUserAuthByToken(final String accessToken) {
         try {
@@ -32,9 +31,8 @@ public class UserAuthDao {
     }
 
     /**
-     * Updates the UserAuthEntity object present in the DB.
      *
-     * @param updatedUserAuthEntity Persisted UserAuthEntity object
+     * @param updatedUserAuthEntity
      */
     public void updateUserAuth(final UserAuthEntity updatedUserAuthEntity) {
         entityManager.merge(updatedUserAuthEntity);

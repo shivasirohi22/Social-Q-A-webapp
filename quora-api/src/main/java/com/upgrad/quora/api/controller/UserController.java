@@ -31,9 +31,10 @@ public class UserController {
     private UserAuthenticationService userAuthService;
 
     /**
-     * method for user signup.
-     * method receives the object of SignupUserRequest type.
-     *  @return SignupUserResponse - UUID of the user created.
+     *
+     * @param signupUserRequest
+     * @return
+     * @throws SignUpRestrictedException
      */
     @RequestMapping(method = RequestMethod.POST, path = "/user/signup", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<SignupUserResponse> signup(SignupUserRequest signupUserRequest) throws SignUpRestrictedException {
@@ -74,10 +75,10 @@ public class UserController {
     }
 
     /**
-     * method is used for signout user.
-     * @param accessToken Token used for user authentication.
-     * @return UUID of the user who is signed out.
-     * @throws SignOutRestrictedException if the
+     *
+     * @param accessToken
+     * @return
+     * @throws SignOutRestrictedException
      */
     @RequestMapping(method = RequestMethod.POST, path = "/user/signout", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<SignoutResponse> signout(@RequestHeader("authorization") final String accessToken) throws SignOutRestrictedException {

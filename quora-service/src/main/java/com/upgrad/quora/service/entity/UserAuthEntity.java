@@ -21,15 +21,7 @@ import java.time.ZonedDateTime;
 
 public class UserAuthEntity implements Serializable {
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
 
-    @Column(name = "uuid")
-    @NotNull
-    @Size(max = 200)
-    private String uuid;
 
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -40,6 +32,18 @@ public class UserAuthEntity implements Serializable {
     @NotNull
     @Size(max = 500)
     private String accessToken;
+
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(name = "uuid")
+    @NotNull
+    @Size(max = 200)
+    private String uuid;
+
 
     @Column(name = "expires_at")
     @NotNull

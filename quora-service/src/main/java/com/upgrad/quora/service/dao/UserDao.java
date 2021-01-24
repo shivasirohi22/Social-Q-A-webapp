@@ -11,11 +11,11 @@ public class UserDao {
 
     @PersistenceContext
     private EntityManager entityManager;
+
     /**
-     * Fetch a single user by given id from the DB.
      *
-     * @param userId Id of the user whose information is to be fetched.
-     * @return User details if exist in the DB else null.
+     * @param userId
+     * @return
      */
     public UserEntity getUserById(final String userId) {
         try {
@@ -26,17 +26,21 @@ public class UserDao {
     }
 
     /**
-    * This methods stores details of the user in the DB.
+     *
+     * @param userEntity
+     * @return
      */
     public UserEntity createUser(UserEntity userEntity) {
         entityManager.persist(userEntity);
         return userEntity;
     }
 
-/**
- * This methods gets details of the user based on the username passed.
- */
-public UserEntity getUserByUserName(final String userName) {
+    /**
+     *
+     * @param userName
+     * @return
+     */
+    public UserEntity getUserByUserName(final String userName) {
     try {
         return entityManager.createNamedQuery("userByUserName", UserEntity.class).setParameter("userName", userName).getSingleResult();
     } catch (NoResultException nre) {
@@ -44,11 +48,12 @@ public UserEntity getUserByUserName(final String userName) {
     }
 }
 
-
-/**
- * This methods gets the details of the user based on the email passed.
- */
-public UserEntity getUserByEmail(final String email) {
+    /**
+     *
+     * @param email
+     * @return
+     */
+    public UserEntity getUserByEmail(final String email) {
     try {
         return entityManager.createNamedQuery("userByEmail", UserEntity.class).setParameter("email", email).getSingleResult();
     } catch (NoResultException nre) {
@@ -62,8 +67,9 @@ public UserEntity getUserByEmail(final String email) {
     }
 
     /**
-     * Deleting user by id from the DB.
-
+     *
+     * @param userId
+     * @return
      */
     public UserEntity deleteUser(final String userId) {
         UserEntity deleteUser = getUserById( userId );
