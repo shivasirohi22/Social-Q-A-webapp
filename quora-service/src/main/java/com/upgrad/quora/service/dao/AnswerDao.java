@@ -1,71 +1,78 @@
 package com.upgrad.quora.service.dao;
 
+
 import com.upgrad.quora.service.entity.AnswerEntity;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
+
 
 @Repository
 public class AnswerDao {
 
-    @PersistenceContext
-    private EntityManager entityManager;
+  @PersistenceContext
+  private EntityManager entityManager;
 
-    /**
-     * Creates an answer in the DB.
-     *
-     * @param answerEntity represents a row of information which is to be persisted.
-     * @return persisted answer entity.
-     */
-    public AnswerEntity createAnswer(AnswerEntity answerEntity) {
-        entityManager.persist(answerEntity);
-        return answerEntity;
+  /**
+   * createAnswer
+   * @param answerEntity
+   * @return
+   */
+  public AnswerEntity createAnswer(AnswerEntity answerEntity) {
+    entityManager.persist(answerEntity);
+    return answerEntity;
+  }
+
+  /**
+   * getAnswerById
+   * @param answerId
+   * @return
+   */
+  public AnswerEntity getAnswerById(final String answerId) {
+    try {
+
+      TypedQuery<AnswerEntity> tQuery= entityManager
+              .createNamedQuery("getAnswerById", AnswerEntity.class).setParameter("uuid", answerId);
+      return tQuery.getSingleResult();
+    } catch (NoResultException noResultException) {
+      return null;
     }
+  }
 
-    /**
-     * Fetches an answer from DB based on the answerId
-     *
-     * @param answerId id of the answer to be fetched.
-     * @return Answer if there exist one with that id in DB else null.
-     */
-    public AnswerEntity getAnswerById(final String answerId) {
-        try {
-            return entityManager.createNamedQuery("getAnswerById", AnswerEntity.class).setParameter("uuid", answerId).getSingleResult();
-        } catch (NoResultException nre) {
-            return null;
-        }
+  /**
+   * updateAnswer
+   * @param answerEntity
+   */
+  public void updateAnswer(AnswerEntity answerEntity) {
+    entityManager.merge(answerEntity);
+  }
+
+  /**
+   * deleteAnswer
+   * @param answerId
+   * @return
+   */
+  public AnswerEntity deleteAnswer(final String answerId) {
+    AnswerEntity deleteAnswer = getAnswerById(answerId);
+    if (deleteAnswer != null) {
+      entityManager.remove(deleteAnswer);
     }
+    return deleteAnswer;
+  }
 
-    /**
-     * updates the row of information in answer table of DB.
-     *
-     * @param answerEntity answer to be updated.
-     */
-    public void updateAnswer(AnswerEntity answerEntity) {
-        entityManager.merge(answerEntity);
-    }
-
-    /**
-     * Deleting an answer by given answerId from the database.
-     * @param answerId Id of the answer whose information is to be fetched.
-     * @return Answer details which is to be deleted if exist in the DB else null.
-     */
-
-    public AnswerEntity deleteAnswer(final String answerId) {
-        AnswerEntity deleteAnswer = getAnswerById(answerId);
-        if (deleteAnswer != null) {
-            entityManager.remove(deleteAnswer);
-        }
-        return deleteAnswer;
-    }
-
-    //fetch all answers to the question
-    public List<AnswerEntity> getAllAnswersToQuestion() {
-        return entityManager.createNamedQuery("getAllAnswersToQuestion", AnswerEntity.class).getResultList();
-    }
-
-
+  /**
+   * get all answers
+   * @param questionId
+   * @return
+   */
+  public List<AnswerEntity> getAllAnswersToQuestion(final String questionId) {
+    return entityManager
+        .createNamedQuery("getAllAnswersToQuestion", AnswerEntity.class)
+        .setParameter("uuid", questionId)
+        .getResultList();
+  }
 }

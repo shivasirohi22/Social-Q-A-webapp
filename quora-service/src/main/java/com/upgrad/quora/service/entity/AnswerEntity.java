@@ -15,99 +15,107 @@ import java.time.ZonedDateTime;
 @Entity
 @Table(name = "answer")
 @NamedQueries({
-        @NamedQuery(name = "getAnswerById", query = "select a from AnswerEntity a where a.uuid=:uuid"),
-        @NamedQuery(name = "getAllAnswersToQuestion", query = "select a from AnswerEntity a")
+
+  @NamedQuery(name = "getAnswerById", query = "select a from AnswerEntity a where a.uuid=:uuid"),
+  @NamedQuery(
+      name = "getAllAnswersToQuestion",
+      query = "select a from AnswerEntity a where a.questionEntity.uuid = :uuid")
 })
 public class AnswerEntity {
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
 
-    @Column(name = "uuid")
-    @Size(max = 200)
-    @NotNull
-    private String uuid;
+  @Column(name = "uuid")
+  @Size(max = 200)
+  @NotNull
+  private String uuid;
 
-    @Column(name = "ans")
-    @Size(max = 255)
-    @NotNull
-    private String answer;
+  @Id
+  @Column(name = "id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer id;
 
-    @Column(name = "date")
-    @NotNull
-    private ZonedDateTime date;
 
-    @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "user_id")
-    private UserEntity userEntity;
 
-    @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "question_id")
-    private QuestionEntity questionEntity;
+  @Column(name = "ans")
+  @Size(max = 255)
+  @NotNull
+  private String answer;
 
-    public Integer getId() {
-        return id;
-    }
+  @Column(name = "date")
+  @NotNull
+  private ZonedDateTime date;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
-    public String getUuid() {
-        return uuid;
-    }
+  @ManyToOne
+  @OnDelete(action = OnDeleteAction.CASCADE)
+  @JoinColumn(name = "question_id")
+  private QuestionEntity questionEntity;
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
+  @ManyToOne
+  @OnDelete(action = OnDeleteAction.CASCADE)
+  @JoinColumn(name = "user_id")
+  private UserEntity userEntity;
 
-    public String getAnswer() {
-        return answer;
-    }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
-    }
+  public Integer getId() {
+    return id;
+  }
 
-    public ZonedDateTime getDate() {
-        return date;
-    }
+  public void setId(Integer id) {
+    this.id = id;
+  }
 
-    public void setDate(ZonedDateTime date) {
-        this.date = date;
-    }
+  public String getUuid() {
+    return uuid;
+  }
 
-    public UserEntity getUserEntity() {
-        return userEntity;
-    }
+  public void setUuid(String uuid) {
+    this.uuid = uuid;
+  }
 
-    public void setUserEntity(UserEntity userEntity) {
-        this.userEntity = userEntity;
-    }
+  public String getAnswer() {
+    return answer;
+  }
 
-    public QuestionEntity getQuestionEntity() {
-        return questionEntity;
-    }
+  public void setAnswer(String answer) {
+    this.answer = answer;
+  }
 
-    public void setQuestionEntity(QuestionEntity questionEntity) {
-        this.questionEntity = questionEntity;
-    }
+  public ZonedDateTime getDate() {
+    return date;
+  }
 
-    @Override
-    public boolean equals(Object obj) {
-        return new EqualsBuilder().append(this, obj).isEquals();
-    }
+  public void setDate(ZonedDateTime date) {
+    this.date = date;
+  }
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(this).hashCode();
-    }
+  public UserEntity getUserEntity() {
+    return userEntity;
+  }
 
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
-    }
+  public void setUserEntity(UserEntity userEntity) {
+    this.userEntity = userEntity;
+  }
+
+  public QuestionEntity getQuestionEntity() {
+    return questionEntity;
+  }
+
+  public void setQuestionEntity(QuestionEntity questionEntity) {
+    this.questionEntity = questionEntity;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    return new EqualsBuilder().append(this, obj).isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder().append(this).hashCode();
+  }
+
+  @Override
+  public String toString() {
+    return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+  }
 }
