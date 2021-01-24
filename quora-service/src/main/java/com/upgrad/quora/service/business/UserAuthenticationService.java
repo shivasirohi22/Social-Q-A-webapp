@@ -2,9 +2,10 @@ package com.upgrad.quora.service.business;
 
 import com.upgrad.quora.service.dao.UserAuthDao;
 import com.upgrad.quora.service.dao.UserDao;
-import com.upgrad.quora.service.entity.UserAuthEntity;
+import com.upgrad.quora.service.entity.*;
 import com.upgrad.quora.service.entity.UserEntity;
 import com.upgrad.quora.service.exception.AuthenticationFailedException;
+import com.upgrad.quora.service.exception.SignOutRestrictedException;
 import com.upgrad.quora.service.exception.SignUpRestrictedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,10 +28,10 @@ public class UserAuthenticationService {
     private PasswordCryptographyProvider passwordCryptographyProvider;
 
     /**
-     * This method checks whether the username and email exist in the DB.
-     * Assigning encrypted password and salt to the user.
      *
-     * @throws SignUpRestrictedException SGR-001 if the username exist in the DB , SGR-002 if the email exist in the DB.
+     * @param userEntity
+     * @return
+     * @throws SignUpRestrictedException
      */
     @Transactional(propagation = Propagation.REQUIRED)
     public UserEntity signup(UserEntity userEntity) throws SignUpRestrictedException {
@@ -50,6 +51,13 @@ public class UserAuthenticationService {
         return userDao.createUser(userEntity);
     }
 
+    /**
+     *
+     * @param username
+     * @param password
+     * @return
+     * @throws AuthenticationFailedException
+     */
     @Transactional(propagation = Propagation.REQUIRED)
     public UserAuthEntity signin(final String username, final String password) throws AuthenticationFailedException {
 
@@ -78,17 +86,21 @@ public class UserAuthenticationService {
         return userAuthEntity;
     }
 
-    //checks whether the username exist in the database
+    /**
+     *
+     * @param userName
+     * @return
+     */
     private boolean isUserNameInUse(final String userName) {
 
         return userDao.getUserByUserName(userName) != null;
     }
 
     /**
-     * This method is used by user to signout.
-     * @param accessToken Access token of the user.
-     * @return UserEntity details of the signed out user.
-     * @throws SignOutRestrictedException SGR-001 if the access-token is not present in the DB.
+     *
+     * @param accessToken
+     * @return
+     * @throws SignOutRestrictedException
      */
     @Transactional(propagation = Propagation.REQUIRED)
     public UserEntity signout(final String accessToken) throws SignOutRestrictedException {
@@ -101,7 +113,11 @@ public class UserAuthenticationService {
         return userAuthEntity.getUserEntity();
     }
 
-    //checks whether the email exist in the database
+    /**
+     *
+     * @param email
+     * @return
+     */
     private boolean isEmailInUse(final String email) {
         return userDao.getUserByEmail(email) != null;
     }

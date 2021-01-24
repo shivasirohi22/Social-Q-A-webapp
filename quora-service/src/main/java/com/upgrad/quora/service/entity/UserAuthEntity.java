@@ -10,6 +10,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.time.ZonedDateTime;
 
 @Entity
@@ -18,7 +19,20 @@ import java.time.ZonedDateTime;
         @NamedQuery(name = "userAuthByAccessToken", query = "select u from UserAuthEntity u where u.accessToken=:accessToken")
 })
 
-public class UserAuthEntity {
+public class UserAuthEntity implements Serializable {
+
+
+
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "user_id")
+    private UserEntity userEntity;
+
+    @Column(name = "access_token")
+    @NotNull
+    @Size(max = 500)
+    private String accessToken;
+
 
     @Id
     @Column(name = "id")
@@ -30,15 +44,6 @@ public class UserAuthEntity {
     @Size(max = 200)
     private String uuid;
 
-    @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "user_id")
-    private UserEntity userEntity;
-
-    @Column(name = "access_token")
-    @NotNull
-    @Size(max = 500)
-    private String accessToken;
 
     @Column(name = "expires_at")
     @NotNull

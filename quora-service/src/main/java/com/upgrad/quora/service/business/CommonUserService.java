@@ -19,8 +19,9 @@ public class CommonUserService {
     UserDao userDao;
 
     /**
-     * method checks whether access token exist in the DB and it is not logged out.
-     * @param accessToken token to be validated.
+     *
+     * @param accessToken
+     * @throws AuthorizationFailedException
      */
     public void checkIfTokenIsValid(String accessToken) throws AuthorizationFailedException {
         UserAuthEntity userAuthEntity = userAuthDao.getUserAuthByToken(accessToken);
@@ -33,8 +34,10 @@ public class CommonUserService {
     }
 
     /**
-     * methods gets the user details depending on the userId passed.
-     * @param userId Id of the user whose information is to be fetched.
+     *
+     * @param userId
+     * @return
+     * @throws UserNotFoundException
      */
     public UserEntity getUserById(final String userId) throws UserNotFoundException {
         UserEntity userEntity = userDao.getUserById(userId);
